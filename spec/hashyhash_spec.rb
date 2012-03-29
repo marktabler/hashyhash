@@ -69,4 +69,23 @@
       end
       hashy_hash.find_by_suit("hearts").should == [@collection.first, @collection.last]
     end
+
+    it "responds to each" do
+      hashy_hash = HashyHash.new(@collection) do |h|
+        h.foreign :suit
+      end
+      counter = 0
+
+      hashy_hash.each do |item|
+        @collection[counter].should == item
+        counter += 1
+      end
+    end
+
+    it "responds to all" do
+      hashy_hash = HashyHash.new(@collection) do |h|
+        h.foreign :suit
+      end
+      hashy_hash.all.sort_by(&:suit).should == @collection.sort_by(&:suit)
+    end
   end

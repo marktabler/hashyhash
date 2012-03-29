@@ -1,10 +1,11 @@
   class HashyHash
     attr_accessor :index_table
-    attr_accessor :unique_keys, :foreign_keys
+    attr_accessor :unique_keys, :foreign_keys, :collection
 
     def initialize(collection, &block)
       @unique_keys = []
       @foreign_keys = []
+      @collection = collection
       set_keys(&block)
       set_indices(collection)
       true
@@ -12,6 +13,14 @@
 
     def[](value)
       @index_table[value]
+    end
+
+    def each(&block)
+      @collection.each(&block)
+    end
+
+    def all
+      @collection
     end
 
     def set_keys(&block)
