@@ -88,4 +88,21 @@
       end
       hashy_hash.all.sort_by(&:suit).should == @collection.sort_by(&:suit)
     end
+
+    it "accepts <<(item)" do
+      hashy_hash = HashyHash.new(@collection) do |h|
+        h.foreign :suit
+      end
+      hashy_hash << OpenStruct.new(suit: "potatoes")
+      hashy_hash.all.map(&:suit).include?("potatoes").should be_true
+    end
+
+    it "returns the string 'HashyHash' when asked for to_s" do
+       hashy_hash = HashyHash.new(@collection) do |h|
+        h.foreign :suit
+      end.to_s.should == "HashyHash"
+    end
+
+
+
   end

@@ -30,14 +30,23 @@
 
     def set_indices(collection)
       collection.each do |item|
-        unique_keys.each do |key|
-          @index_table[key][item.send(key)] = item
-        end
-        foreign_keys.each do |key|
-          @index_table[key][item.send(key)] ||= []
-          @index_table[key][item.send(key)] << item
-        end
+        index_new(item)
       end 
+    end
+
+    def index_new(item)
+      unique_keys.each do |key|
+        @index_table[key][item.send(key)] = item
+      end
+      foreign_keys.each do |key|
+        @index_table[key][item.send(key)] ||= []
+        @index_table[key][item.send(key)] << item
+      end
+    end
+
+    def <<(item)
+      @collection << item
+      index_new(item)
     end
 
     def indexes
