@@ -1,5 +1,4 @@
-module Hashy
-  class Index
+  class HashyHash
     attr_accessor :index_table
     attr_accessor :unique_keys, :foreign_keys
 
@@ -8,6 +7,7 @@ module Hashy
       @foreign_keys = []
       set_keys(&block)
       set_indices(collection)
+      true
     end
 
     def[](value)
@@ -57,5 +57,8 @@ module Hashy
       @foreign_keys << key
     end
 
+    def to_s
+      "HashyHash"
+    end
+
   end
-end

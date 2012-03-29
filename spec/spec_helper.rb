@@ -6,4 +6,4 @@ end
 require 'bundler'
 Bundler.require
 
-require './lib/hashy'
+require './lib/hashyhash'

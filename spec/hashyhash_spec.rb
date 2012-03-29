@@ -1,7 +1,7 @@
   require 'spec_helper'
   require 'ostruct'
 
-  describe Hashy::Index do
+  describe HashyHash do
     before(:each) do
       a = OpenStruct.new({id: 1, name: "foo", suit: "hearts"})
       b = OpenStruct.new({id: 2, name: "bar", suit: "spades"})
@@ -15,7 +15,7 @@
 
     it "does not interfere with Method Missing" do
       expect do
-        hashy_hash = Hashy::Index.new(@collection) do |h|
+        hashy_hash = HashyHash.new(@collection) do |h|
           h.unique :id
         end
         hashy_hash.foo_bar
@@ -24,7 +24,7 @@
 
     it "establishes unique indexes via a block" do
       expect do
-        hashy_hash = Hashy::Index.new(@collection) do |h|
+        hashy_hash = HashyHash.new(@collection) do |h|
           h.unique :id
           h.unique :name
         end
@@ -33,14 +33,14 @@
 
     it "establishes foreign keys via a block" do
       expect do
-        hashy_hash = Hashy::Index.new(@collection) do |h|
+        hashy_hash = HashyHash.new(@collection) do |h|
           h.foreign :suit
         end
       end.should_not raise_exception      
     end
 
     it "adds one index for each key in the block" do
-      hashy_hash = Hashy::Index.new(@collection) do |h|
+      hashy_hash = HashyHash.new(@collection) do |h|
         h.unique :id
         h.unique :name
       end
@@ -48,7 +48,7 @@
     end
 
     it "adds one element for each item in the collection" do
-      hashy_hash = Hashy::Index.new(@collection) do |h|
+      hashy_hash = HashyHash.new(@collection) do |h|
         h.unique :id
         h.unique :name
       end
@@ -56,7 +56,7 @@
     end
 
     it "can find_by a unique key" do
-      hashy_hash = Hashy::Index.new(@collection) do |h|
+      hashy_hash = HashyHash.new(@collection) do |h|
         h.unique :id
         h.unique :name
       end
@@ -64,10 +64,9 @@
     end
 
     it "can find_by a foreign key" do
-      hashy_hash = Hashy::Index.new(@collection) do |h|
+      hashy_hash = HashyHash.new(@collection) do |h|
         h.foreign :suit
       end
       hashy_hash.find_by_suit("hearts").should == [@collection.first, @collection.last]
     end
-
   end
