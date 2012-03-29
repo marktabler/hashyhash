@@ -58,7 +58,9 @@
       if command[0..1] == ["find", "by"]
         field = command[2..-1].join('_')
         return @index_table[field.to_sym][args[0]]
-      else  
+      elsif @collection.respond_to?(method)
+        @collection.send(method, *args, &block)
+      else
         super(method, *args, &block)
       end
     end

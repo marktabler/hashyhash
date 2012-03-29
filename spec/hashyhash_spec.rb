@@ -104,5 +104,11 @@
     end
 
 
+    it "delegates method missing to @collection first" do
+       hashy_hash = HashyHash.new(@collection) do |h|
+        h.foreign :suit
+      end
+      hashy_hash.size.should == 3
+    end
 
   end
