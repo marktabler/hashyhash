@@ -10,6 +10,10 @@ module Hashy
       set_indices(collection)
     end
 
+    def[](value)
+      @index_table[value]
+    end
+
     def set_keys(&block)
       @index_table = Hash.new
       yield self
@@ -21,19 +25,35 @@ module Hashy
           @index_table[key][item.send(key)] = item
         end
         foreign_keys.each do |key|
+          @index_table[key][item.send(key)] ||= []
           @index_table[key][item.send(key)] << item
         end
       end 
     end
 
+    def indexes
+      unique_keys + foreign_keys
+    end
+
+    def method_missing(method, *args, &block)
+      command = method.to_s.split('_')
+      if command[0..1] == ["find", "by"]
+        field = command[2..-1].join('_')
+        return @index_table[field.to_sym][args[0]]
+      else  
+        super(method, *args, &block)
+      end
+    end
+
+
     # index_table[:id][1] = record
     def unique(key)
-      @index_table[key] = Hash.new(Hash.new)
+      @index_table[key] = Hash.new()
       @unique_keys << key
     end
 
     def foreign(key)
-      @index_table[key] = Hash.new([])
+      @index_table[key] = Hash.new()
       @foreign_keys << key
     end
 
