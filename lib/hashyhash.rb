@@ -65,7 +65,6 @@
       end
     end
 
-
     # index_table[:id][1] = record
     def unique(key)
       @index_table[key] = Hash.new()
